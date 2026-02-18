@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pagerduty-mcp-server"
+name = "clr-pagerduty-mcp"
 version = "1.0.0"
 description = "MCP server for PagerDuty incident management"
 requires-python = ">=3.11"
@@ -22,7 +22,7 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/clearminds/pagerduty-mcp-server"
+Repository = "https://github.com/clearminds/clr-pagerduty-mcp"
 
 [project.scripts]
-pagerduty-mcp-server = "pagerduty_mcp_server.server:main"
+clr-pagerduty-mcp = "clr_pagerduty_mcp.server:main"

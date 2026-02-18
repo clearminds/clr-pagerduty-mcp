@@ -1,13 +1,13 @@
-# pagerduty-mcp-server
+# clr-pagerduty-mcp
 
 PagerDuty incident and on-call management
 
 ## Install
 
 ```bash
-pip install pagerduty-mcp-server
+pip install clr-pagerduty-mcp
 # or
-uvx pagerduty-mcp-server
+uvx clr-pagerduty-mcp
 ```
 
 ## Configuration
@@ -33,16 +33,16 @@ Get token: PagerDuty → Configuration → API Access → Create API Key
 See `--help` for additional options:
 
 ```bash
-pagerduty-mcp-server --help
+clr-pagerduty-mcp --help
 ```
 
 ## Development
 
 ```bash
-git clone https://github.com/clearminds/pagerduty-mcp-server.git
-cd pagerduty-mcp-server
+git clone https://github.com/clearminds/clr-pagerduty-mcp.git
+cd clr-pagerduty-mcp
 uv sync
-uv run pagerduty-mcp-server
+uv run clr-pagerduty-mcp
 ```
 
 ## License

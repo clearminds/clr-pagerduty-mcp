@@ -8,8 +8,8 @@ from typing import Any
 
 from fastmcp import FastMCP
 
-from pagerduty_mcp_server.config import Settings
-from pagerduty_mcp_server.pd_client import PagerDutyClient
+from clr_pagerduty_mcp.config import Settings
+from clr_pagerduty_mcp.pd_client import PagerDutyClient
 
 mcp = FastMCP("PagerDuty")
 _client: PagerDutyClient | None = None
