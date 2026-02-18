@@ -12,7 +12,25 @@ uvx pagerduty-mcp-server
 
 ## Configuration
 
-Configuration via environment variables. See `--help` for all options:
+**Preferred:** Configuration file at `~/.config/pagerduty/credentials.json` (chmod 600):
+
+```json
+{
+  "token": "your-api-token",
+  "email": "user@example.com"
+}
+```
+
+Get token: PagerDuty → Configuration → API Access → Create API Key
+
+**Alternative:** Environment variables are also supported:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `PAGERDUTY_TOKEN` | PagerDuty API token | `your-api-token` |
+| `PAGERDUTY_EMAIL` | User email address | `user@example.com` |
+
+See `--help` for additional options:
 
 ```bash
 pagerduty-mcp-server --help
