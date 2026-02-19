@@ -249,8 +249,6 @@ def main() -> None:
 
     transport = args.transport or settings.pagerduty_transport
     log_level = args.log_level or settings.pagerduty_log_level
-    api_key = args.pagerduty_api_key or settings.pagerduty_api_key
-    email = args.pagerduty_email or settings.pagerduty_email
 
     logging.config.dictConfig(
         {
@@ -273,6 +271,10 @@ def main() -> None:
     )
 
     logger = logging.getLogger(__name__)
+
+    creds = settings.load_credentials()
+    api_key = args.pagerduty_api_key or creds.get("api_key", "")
+    email = args.pagerduty_email or creds.get("email", "")
 
     if not api_key:
         logger.error("PAGERDUTY_API_KEY is required")
