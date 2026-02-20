@@ -11,7 +11,12 @@ API_BASE = "https://api.pagerduty.com"
 
 
 class PagerDutyClient:
-    """PagerDuty REST API v2 client with token auth."""
+    """PagerDuty REST API v2 client with token auth.
+
+    Attributes:
+        api_key: The PagerDuty API token.
+        email: Email address used for the ``From`` header in write operations.
+    """
 
     def __init__(self, api_key: str, email: str = "") -> None:
         self.api_key = api_key
@@ -27,16 +32,39 @@ class PagerDutyClient:
         )
 
     def close(self) -> None:
+        """Close the underlying HTTP client."""
         self._http.close()
 
     def get(self, path: str, params: dict[str, Any] | None = None) -> Any:
-        """GET request. Returns parsed JSON."""
+        """Send a GET request and return parsed JSON.
+
+        Args:
+            path: API endpoint path (e.g. ``/incidents``).
+            params: Optional query parameters.
+
+        Returns:
+            Parsed JSON response body.
+
+        Raises:
+            httpx.HTTPStatusError: If the response status indicates an error.
+        """
         resp = self._http.get(path, params=params)
         resp.raise_for_status()
         return resp.json()
 
     def put(self, path: str, data: Any = None) -> Any:
-        """PUT request with From header. Returns parsed JSON."""
+        """Send a PUT request with the From header and return parsed JSON.
+
+        Args:
+            path: API endpoint path (e.g. ``/incidents/{id}``).
+            data: JSON-serializable request body.
+
+        Returns:
+            Parsed JSON response body.
+
+        Raises:
+            httpx.HTTPStatusError: If the response status indicates an error.
+        """
         headers = {}
         if self.email:
             headers["From"] = self.email

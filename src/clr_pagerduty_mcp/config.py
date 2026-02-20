@@ -17,7 +17,13 @@ class Settings(BaseSettings):
 
     Priority order:
     1. ~/.config/pagerduty/credentials.json
-    2. Environment variables (PAGERDUTY_API_KEY, PAGERDUTY_EMAIL) - override
+    2. Environment variables (PAGERDUTY_API_KEY, PAGERDUTY_EMAIL) -- override
+
+    Attributes:
+        pagerduty_api_key: The PagerDuty REST API token.
+        pagerduty_email: Email address required for write operations (From header).
+        pagerduty_transport: MCP transport mode (``stdio`` or ``http``).
+        pagerduty_log_level: Logging verbosity level.
     """
 
     pagerduty_api_key: str = ""

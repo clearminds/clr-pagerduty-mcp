@@ -27,12 +27,14 @@ def pd_list_incidents(
     """List incidents, optionally filtered by status and urgency.
 
     Args:
-        statuses: Comma-separated statuses to filter — triggered, acknowledged,
+        statuses: Comma-separated statuses to filter -- triggered, acknowledged,
                   resolved. Default: triggered,acknowledged (active incidents).
-        urgency: Filter by urgency — high or low.
+        urgency: Filter by urgency -- high or low.
         limit: Max incidents to return (default 25, max 100).
 
-    Returns list of incidents with id, title, status, urgency, service, and timestamps.
+    Returns:
+        A list of incidents with id, title, status, urgency, service, and
+        timestamps.
     """
     params: dict[str, Any] = {"limit": min(limit, 100)}
 
@@ -81,7 +83,8 @@ def pd_get_incident(incident_id: str) -> dict[str, Any]:
     Args:
         incident_id: The PagerDuty incident ID (e.g. "PABC123").
 
-    Returns complete incident information.
+    Returns:
+        Complete incident information as a dictionary.
     """
     data = _client.get(f"/incidents/{incident_id}")
     return data.get("incident", data)
@@ -96,7 +99,8 @@ def pd_acknowledge_incident(incident_id: str) -> dict[str, Any]:
     Args:
         incident_id: The PagerDuty incident ID to acknowledge.
 
-    Returns updated incident data.
+    Returns:
+        Updated incident data, or an error dict if email is not configured.
     """
     if not _client.email:
         return {
@@ -119,7 +123,8 @@ def pd_resolve_incident(incident_id: str) -> dict[str, Any]:
     Args:
         incident_id: The PagerDuty incident ID to resolve.
 
-    Returns updated incident data.
+    Returns:
+        Updated incident data, or an error dict if email is not configured.
     """
     if not _client.email:
         return {
@@ -140,7 +145,8 @@ def pd_resolve_incident(incident_id: str) -> dict[str, Any]:
 def pd_list_oncalls() -> list[dict[str, Any]]:
     """List who is currently on call across all schedules.
 
-    Returns list of on-call entries with user, schedule, start/end times.
+    Returns:
+        A list of on-call entries with user, schedule, and start/end times.
     """
     data = _client.get("/oncalls")
     return [
@@ -165,7 +171,8 @@ def pd_list_oncalls() -> list[dict[str, Any]]:
 def pd_list_services() -> list[dict[str, Any]]:
     """List all PagerDuty services.
 
-    Returns list of services with id, name, status, and description.
+    Returns:
+        A list of services with id, name, status, and description.
     """
     data = _client.get("/services")
     return [
@@ -187,7 +194,8 @@ def pd_list_services() -> list[dict[str, Any]]:
 def pd_list_schedules() -> list[dict[str, Any]]:
     """List all on-call schedules.
 
-    Returns list of schedules with id, name, time zone.
+    Returns:
+        A list of schedules with id, name, and time zone.
     """
     data = _client.get("/schedules")
     return [
@@ -208,7 +216,8 @@ def pd_list_schedules() -> list[dict[str, Any]]:
 def pd_list_escalation_policies() -> list[dict[str, Any]]:
     """List all escalation policies.
 
-    Returns list of policies with id, name, number of loops.
+    Returns:
+        A list of policies with id, name, and number of loops.
     """
     data = _client.get("/escalation_policies")
     return [
