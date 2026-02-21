@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     pagerduty_email: str = ""  # Required for write ops (From header)
     pagerduty_transport: str = "stdio"
     pagerduty_log_level: str = "INFO"
+    pd_read_only: bool = False
 
     model_config = {"env_prefix": ""}
 

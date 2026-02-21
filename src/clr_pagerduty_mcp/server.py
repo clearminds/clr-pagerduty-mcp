@@ -14,6 +14,8 @@ from clr_pagerduty_mcp.pd_client import PagerDutyClient
 mcp = FastMCP("PagerDuty")
 _client: PagerDutyClient | None = None
 
+WRITE_TOOLS = ["pd_acknowledge_incident", "pd_resolve_incident"]
+
 
 # ── Incident tools ───────────────────────────────────────────────────
 
@@ -254,6 +256,12 @@ def main() -> None:
     )
     parser.add_argument("--pagerduty-api-key", type=str, default=None)
     parser.add_argument("--pagerduty-email", type=str, default=None)
+    parser.add_argument(
+        "--read-only",
+        action="store_true",
+        default=None,
+        help="Run in read-only mode (hide write tools)",
+    )
     args = parser.parse_args()
 
     transport = args.transport or settings.pagerduty_transport
@@ -294,6 +302,12 @@ def main() -> None:
 
     logger.info("Starting PagerDuty MCP Server")
     _client = PagerDutyClient(api_key, email)
+
+    read_only = args.read_only if args.read_only is not None else settings.pd_read_only
+    if read_only and WRITE_TOOLS:
+        for name in WRITE_TOOLS:
+            mcp.remove_tool(name)
+        logger.info("Read-only mode: %d write tools removed", len(WRITE_TOOLS))
 
     try:
         if transport == "stdio":
