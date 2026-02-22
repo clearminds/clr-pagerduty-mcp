@@ -10,8 +10,10 @@ from fastmcp import FastMCP
 
 from clr_pagerduty_mcp.config import Settings
 from clr_pagerduty_mcp.pd_client import PagerDutyClient
+from clr_pagerduty_mcp.middleware import ToolValidationMiddleware
 
 mcp = FastMCP("PagerDuty")
+mcp.add_middleware(ToolValidationMiddleware())
 _client: PagerDutyClient | None = None
 
 WRITE_TOOLS = ["pd_acknowledge_incident", "pd_resolve_incident"]
