@@ -59,6 +59,7 @@ Optional:
 
 | Variable | Description | Default |
 |----------|-------------|---------|
+| `PD_READ_ONLY` | Run in read-only mode | `false` |
 | `PAGERDUTY_TRANSPORT` | Transport protocol (`stdio` or `http`) | `stdio` |
 | `PAGERDUTY_LOG_LEVEL` | Log level | `INFO` |
 
