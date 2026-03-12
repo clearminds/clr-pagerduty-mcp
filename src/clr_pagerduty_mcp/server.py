@@ -235,6 +235,28 @@ def pd_list_escalation_policies() -> list[dict[str, Any]]:
     ]
 
 
+# ── Composite init ───────────────────────────────────────────────────
+
+
+def init_composite() -> FastMCP:
+    """Initialize for composite mounting. Returns the FastMCP instance."""
+    global _client
+
+    settings = Settings()
+    creds = settings.load_credentials()
+
+    api_key = creds.get("api_key", "")
+    email = creds.get("email", "")
+
+    _client = PagerDutyClient(api_key, email)
+
+    if settings.pd_read_only and WRITE_TOOLS:
+        for name in WRITE_TOOLS:
+            mcp.remove_tool(name)
+
+    return mcp
+
+
 # ── Main entry point ─────────────────────────────────────────────────
 
 
