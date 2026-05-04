@@ -16,12 +16,10 @@ mcp = FastMCP("PagerDuty")
 mcp.add_middleware(ToolValidationMiddleware())
 _client: PagerDutyClient | None = None
 
-WRITE_TOOLS = ["pd_acknowledge_incident", "pd_resolve_incident"]
-
 # Imported here (not at the top) on purpose: annotations.py needs ``mcp`` from
 # this module, so importing it before the ``mcp = FastMCP(...)`` line above
 # would be a circular import. Do not move.
-from clr_pagerduty_mcp.annotations import read_tool, write_tool  # noqa: E402
+from clr_pagerduty_mcp.annotations import read_tool, remove_non_read_tools, write_tool  # noqa: E402
 
 
 # ── Incident tools ───────────────────────────────────────────────────
@@ -311,10 +309,9 @@ def main() -> None:
     _client = PagerDutyClient(api_key, email)
 
     read_only = args.read_only if args.read_only is not None else settings.pd_read_only
-    if read_only and WRITE_TOOLS:
-        for name in WRITE_TOOLS:
-            mcp.remove_tool(name)
-        logger.info("Read-only mode: %d write tools removed", len(WRITE_TOOLS))
+    if read_only:
+        removed = remove_non_read_tools(mcp)
+        logger.info("Read-only mode: %d non-read tools removed", removed)
 
     try:
         if transport == "stdio":
