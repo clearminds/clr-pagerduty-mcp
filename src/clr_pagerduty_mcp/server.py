@@ -16,13 +16,16 @@ mcp = FastMCP("PagerDuty")
 mcp.add_middleware(ToolValidationMiddleware())
 _client: PagerDutyClient | None = None
 
-WRITE_TOOLS = ["pd_acknowledge_incident", "pd_resolve_incident"]
+# Imported here (not at the top) on purpose: annotations.py needs ``mcp`` from
+# this module, so importing it before the ``mcp = FastMCP(...)`` line above
+# would be a circular import. Do not move.
+from clr_pagerduty_mcp.annotations import read_tool, remove_non_read_tools, write_tool  # noqa: E402
 
 
 # ── Incident tools ───────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def pd_list_incidents(
     statuses: str | None = None,
     urgency: str | None = None,
@@ -80,7 +83,7 @@ def pd_list_incidents(
     ]
 
 
-@mcp.tool
+@read_tool
 def pd_get_incident(incident_id: str) -> dict[str, Any]:
     """Get full detail for a specific incident.
 
@@ -94,7 +97,7 @@ def pd_get_incident(incident_id: str) -> dict[str, Any]:
     return data.get("incident", data)
 
 
-@mcp.tool
+@write_tool
 def pd_acknowledge_incident(incident_id: str) -> dict[str, Any]:
     """Acknowledge a triggered incident.
 
@@ -118,7 +121,7 @@ def pd_acknowledge_incident(incident_id: str) -> dict[str, Any]:
     return data.get("incident", data)
 
 
-@mcp.tool
+@write_tool
 def pd_resolve_incident(incident_id: str) -> dict[str, Any]:
     """Resolve an incident.
 
@@ -145,7 +148,7 @@ def pd_resolve_incident(incident_id: str) -> dict[str, Any]:
 # ── On-call tools ────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def pd_list_oncalls() -> list[dict[str, Any]]:
     """List who is currently on call across all schedules.
 
@@ -171,7 +174,7 @@ def pd_list_oncalls() -> list[dict[str, Any]]:
 # ── Service tools ────────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def pd_list_services() -> list[dict[str, Any]]:
     """List all PagerDuty services.
 
@@ -194,7 +197,7 @@ def pd_list_services() -> list[dict[str, Any]]:
 # ── Schedule tools ───────────────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def pd_list_schedules() -> list[dict[str, Any]]:
     """List all on-call schedules.
 
@@ -216,7 +219,7 @@ def pd_list_schedules() -> list[dict[str, Any]]:
 # ── Escalation policy tools ─────────────────────────────────────────
 
 
-@mcp.tool
+@read_tool
 def pd_list_escalation_policies() -> list[dict[str, Any]]:
     """List all escalation policies.
 
@@ -328,10 +331,9 @@ def main() -> None:
     _client = PagerDutyClient(api_key, email)
 
     read_only = args.read_only if args.read_only is not None else settings.pd_read_only
-    if read_only and WRITE_TOOLS:
-        for name in WRITE_TOOLS:
-            mcp.remove_tool(name)
-        logger.info("Read-only mode: %d write tools removed", len(WRITE_TOOLS))
+    if read_only:
+        removed = remove_non_read_tools(mcp)
+        logger.info("Read-only mode: %d non-read tools removed", removed)
 
     try:
         if transport == "stdio":
