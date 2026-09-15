@@ -130,10 +130,10 @@ clr-pagerduty-mcp --transport http --host 0.0.0.0 --port 8000
 
 | Tool | Description | Parameters |
 |------|-------------|------------|
-| `pd_list_incidents` | List incidents with optional filters | `statuses?`, `urgency?`, `limit?` |
-| `pd_get_incident` | Get full detail for a specific incident | `incident_id` |
-| `pd_acknowledge_incident` | Acknowledge a triggered incident | `incident_id` |
-| `pd_resolve_incident` | Resolve an incident | `incident_id` |
+| `list_incidents` | List incidents with optional filters | `statuses?`, `urgency?`, `limit?` |
+| `get_incident` | Get full detail for a specific incident | `incident_id` |
+| `acknowledge_incident` | Acknowledge a triggered incident | `incident_id` |
+| `resolve_incident` | Resolve an incident | `incident_id` |
 
 **Incident filter values:**
 
@@ -147,25 +147,25 @@ clr-pagerduty-mcp --transport http --host 0.0.0.0 --port 8000
 
 | Tool | Description |
 |------|-------------|
-| `pd_list_oncalls` | List who is currently on call across all schedules |
+| `list_oncalls` | List who is currently on call across all schedules |
 
 ### Services
 
 | Tool | Description |
 |------|-------------|
-| `pd_list_services` | List all PagerDuty services with status |
+| `list_services` | List all PagerDuty services with status |
 
 ### Schedules
 
 | Tool | Description |
 |------|-------------|
-| `pd_list_schedules` | List all on-call schedules with time zones |
+| `list_schedules` | List all on-call schedules with time zones |
 
 ### Escalation Policies
 
 | Tool | Description |
 |------|-------------|
-| `pd_list_escalation_policies` | List all escalation policies with loop counts |
+| `list_escalation_policies` | List all escalation policies with loop counts |
 
 ## Example Usage
 
@@ -184,7 +184,7 @@ Once connected, you can ask your AI assistant things like:
 
 All `pd_list_*` and `pd_get_*` tools are **read-only** and safe to call at any time.
 
-`pd_acknowledge_incident` and `pd_resolve_incident` are **write operations** — they change incident status in PagerDuty. These require `PAGERDUTY_EMAIL` to be configured so PagerDuty can attribute the action. Without it, write tools return an error instead of silently failing.
+`acknowledge_incident` and `resolve_incident` are **write operations** — they change incident status in PagerDuty. These require `PAGERDUTY_EMAIL` to be configured so PagerDuty can attribute the action. Without it, write tools return an error instead of silently failing.
 
 ## Technical Notes
 

@@ -26,7 +26,7 @@ from clr_pagerduty_mcp.annotations import read_tool, remove_non_read_tools, writ
 
 
 @read_tool
-def pd_list_incidents(
+def list_incidents(
     statuses: str | None = None,
     urgency: str | None = None,
     limit: int = 25,
@@ -84,7 +84,7 @@ def pd_list_incidents(
 
 
 @read_tool
-def pd_get_incident(incident_id: str) -> dict[str, Any]:
+def get_incident(incident_id: str) -> dict[str, Any]:
     """Get full detail for a specific incident.
 
     Args:
@@ -98,7 +98,7 @@ def pd_get_incident(incident_id: str) -> dict[str, Any]:
 
 
 @write_tool
-def pd_acknowledge_incident(incident_id: str) -> dict[str, Any]:
+def acknowledge_incident(incident_id: str) -> dict[str, Any]:
     """Acknowledge a triggered incident.
 
     Requires PAGERDUTY_EMAIL to be configured for the From header.
@@ -122,7 +122,7 @@ def pd_acknowledge_incident(incident_id: str) -> dict[str, Any]:
 
 
 @write_tool
-def pd_resolve_incident(incident_id: str) -> dict[str, Any]:
+def resolve_incident(incident_id: str) -> dict[str, Any]:
     """Resolve an incident.
 
     Requires PAGERDUTY_EMAIL to be configured for the From header.
@@ -149,7 +149,7 @@ def pd_resolve_incident(incident_id: str) -> dict[str, Any]:
 
 
 @read_tool
-def pd_list_oncalls() -> list[dict[str, Any]]:
+def list_oncalls() -> list[dict[str, Any]]:
     """List who is currently on call across all schedules.
 
     Returns:
@@ -175,7 +175,7 @@ def pd_list_oncalls() -> list[dict[str, Any]]:
 
 
 @read_tool
-def pd_list_services() -> list[dict[str, Any]]:
+def list_services() -> list[dict[str, Any]]:
     """List all PagerDuty services.
 
     Returns:
@@ -198,7 +198,7 @@ def pd_list_services() -> list[dict[str, Any]]:
 
 
 @read_tool
-def pd_list_schedules() -> list[dict[str, Any]]:
+def list_schedules() -> list[dict[str, Any]]:
     """List all on-call schedules.
 
     Returns:
@@ -220,7 +220,7 @@ def pd_list_schedules() -> list[dict[str, Any]]:
 
 
 @read_tool
-def pd_list_escalation_policies() -> list[dict[str, Any]]:
+def list_escalation_policies() -> list[dict[str, Any]]:
     """List all escalation policies.
 
     Returns:
